@@ -1,107 +1,14 @@
 #!/bin/bash
 
-# Create a db without password
-#
-# usage: ynh_mysql_create_user user
-# | arg: user - the user name to create
-ynh_psql_create_db_without_password() {
-	db=$1
-	sudo su -c "psql" postgres <<< \
-	"CREATE USER $db CREATEDB;"
-}
-
-# Create a user
-#
-# usage: ynh_mysql_create_user user pwd [host]
-# | arg: user - the user name to create
-# | arg: pwd - the password to identify user by
-ynh_psql_create_user() {
-	sudo su -c "createuser -s ${1}" postgres
-}
-
-# Create a database and grant optionnaly privilegies to a user
-#
-# usage: ynh_mysql_create_db db [user [pwd]]
-# | arg: db - the database name to create
-# | arg: user - the user to grant privilegies
-# | arg: pwd - the password to identify user by
-ynh_psql_create_db() {
-	db=$1
-	# grant all privilegies to user
-	if [[ $# -gt 1 ]]; then
-		if [[ $# -lt 3 ]]; then
-			ynh_psql_create_user ${2}
-		else
-			ynh_psql_create_user ${2} "${3}"
-		fi
-		sudo su -c "createdb -O ${2} $db" postgres
-	else
-		sudo su -c "createdb $db" postgres
-	fi
-}
-
 # Create extension
 #
 # usage: ynh_psql_create_extension db extension
+# | arg: db - the database name where the extension will be created
 # | arg: extension - the extension name to create
 ynh_psql_create_extension() {
-	sudo su -c "psql" postgres <<< \
-	"CREATE EXTENSION ${1};"
-}
-
-# Create role
-#
-# usage: ynh_psql_create_role role
-# | arg: role - the role to create
-ynh_psql_create_role() {
-	sudo su -c "psql" postgres <<< \
-	"CREATE ROLE ${1} WITH LOGIN SUPERUSER PASSWORD '${1}';"
-}
-
-# Revoke connect
-#
-# usage: ynh_psql_revoke_connect user
-# | arg: user - the user name to revoke
-ynh_psql_revoke_connect() {
-	sudo su -c "psql" postgres <<< \
-	"REVOKE CONNECT ON DATABASE ${1} FROM GROUP;"
-}
-
-# Drop a database
-#
-# usage: ynh_mysql_drop_db db
-# | arg: db - the database name to drop
-ynh_psql_drop_db() {
-	sudo su -c "psql" postgres <<< \
-	"REASSIGN OWNED BY root TO postgres; 
-	 DROP OWNED BY root;"
-	sudo su -c "dropdb ${1}" postgres
-}
-
-# Drop a user
-#
-# usage: ynh_mysql_drop_user user
-# | arg: user - the user name to drop
-ynh_psql_drop_user() {
-	sudo su -c "dropuser ${1}" postgres
-}
-
-# Drop extension
-#
-# usage: ynh_psql_drop_extension extension
-# | arg: extension - the extension to create
-ynh_psql_drop_extension() {
-	sudo su -c "psql" postgres <<< \
-	"DROP EXTENSION ${1};"
-}
-
-# Drop role
-#
-# usage: ynh_psql_drop_role role
-# | arg: extension - the role to create
-ynh_psql_drop_role() {
-	sudo su -c "psql" postgres <<< \
-	"DROP ROLE ${1};"
+	local db="$1"
+	local extension="$2"
+	sudo --login --user=postgres psql -d ${db} -c "CREATE EXTENSION ${extension};"
 }
 
 # Replace variable umap conf file
