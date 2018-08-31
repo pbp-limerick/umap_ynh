@@ -27,8 +27,6 @@ ynh_backup "$final_path" "sources" 1
 ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "nginx.conf"
 
 # Backup db
-sudo su - postgres <<COMMANDS
-pg_dump --role=umap -U postgres --no-password umap > umap_db.sql
-COMMANDS
+ynh_psql_dump_db $app > /var/lib/postgresql/${app}_db.sql
 ynh_backup "/var/lib/postgresql/${app}_db.sql" "${app}_db.sql"
 ynh_secure_remove "/var/lib/postgresql/${app}_db.sql"
