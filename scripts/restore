@@ -56,17 +56,11 @@ sudo chown -R $app: "$final_path"
 
 pushd $final_path
 
-#Create a postgresql database & superuser
-ynh_psql_create_db $app $app
-
-# Activate PostGIS extension
-ynh_psql_create_extension postgis
-
-# Create role root & umap
-ynh_psql_create_role root
+# Create role and database with a password
+ynh_psql_setup_db $app $app
 
 # Restore db
-sudo pg_dump --role=umap -U root umap < $YNH_APP_BACKUP_DIR/umap_db.sql
+sudo --login --user=postgres psql -d ${db} -i $YNH_APP_BACKUP_DIR/umap_db.sql
 
 popd
 
