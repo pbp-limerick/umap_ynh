@@ -14,7 +14,7 @@ domain=$(ynh_app_setting_get $app domain)
 # TODO: Forbidden: delete yunohost moulinette, bad idea
 # sudo apt-get --purge remove -y python3.4 python3.4-dev python3-pip python3-virtualenv uwsgi uwsgi-plugin-python3 postgresql-9.4 postgresql-9.4-postgis-2.1 postgresql-server-dev-9.4 libpq-dev
 
-ynh_psql_remove_db $app
+ynh_psql_remove_db $app $app
 
 sudo systemctl disable uwsgi
 
