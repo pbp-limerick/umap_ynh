@@ -18,12 +18,12 @@ app=$YNH_APP_INSTANCE_NAME
 
 # Get old parameter of the app
 domain=$(ynh_app_setting_get $app domain)
-path=$(ynh_app_setting_get $app path)
+path_url=$(ynh_app_setting_get $app path_url)
 is_public=$(ynh_app_setting_get $app is_public)
 
 # Check domain/path availability
-sudo yunohost app checkurl "${domain}${path}" -a "$app" \
-    || ynh_die "Path not available: ${domain}${path}"
+sudo yunohost app checkurl "${domain}${path_url}" -a "$app" \
+    || ynh_die "Path not available: ${domain}${path_url}"
 
 # Check $final_path
 final_path="/opt/${app}"
