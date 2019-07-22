@@ -31,8 +31,8 @@
                 "example": "domain.org"
             },
             {
-                "name": "path",
-                "type": "path",
+                "name": "path_url",
+                "type": "path_url",
                 "ask": {
                     "en": "Choose a path for umap",
                     "fr": "Choisissez un chemin pour umap"
