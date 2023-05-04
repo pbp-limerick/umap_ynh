@@ -1,6 +1,7 @@
 {
     "name": "umap",
     "id": "umap",
+    "version": "0.0.25",
     "packaging_format": 1,
     "requirements": {
         "yunohost": ">> 2.3.15"

@@ -21,9 +21,9 @@ ynh_replace_config_umap() {
 	if test -n "${secret:-}"; then
 		ynh_replace_string "SECRET_KEY = '!!change me!!'" "SECRET_KEY = '$secret'" "$localfile"
 	fi
-	if test -n "${final_path:-}"; then
-		ynh_replace_string "STATIC_ROOT = '/home/srv/var/static'" "STATIC_ROOT = '$final_path/static'" "$localfile"
-		ynh_replace_string "MEDIA_ROOT = '/home/srv/umap/var/data'" "MEDIA_ROOT = '$final_path/data'" "$localfile"
+	if test -n "${install_dir:-}"; then
+		ynh_replace_string "STATIC_ROOT = '/home/srv/var/static'" "STATIC_ROOT = '$install_dir/static'" "$localfile"
+		ynh_replace_string "MEDIA_ROOT = '/home/srv/umap/var/data'" "MEDIA_ROOT = '$install_dir/data'" "$localfile"
 	fi
 	if test -n "${language:-}"; then
 		ynh_replace_string "LANGUAGE_CODE = 'en'" "LANGUAGE_CODE = '$language'" "$localfile"

@@ -11,29 +11,29 @@ source /usr/share/yunohost/helpers # Source app helpers
 #=================================================
 
 # Exit if an error occurs during the execution of the script
-ynh_abort_if_errors
+#REMOVEME? ynh_abort_if_errors
 
 #=================================================
 # RETRIEVE ARGUMENTS FROM THE MANIFEST
 #=================================================
 
 # Retrieve arguments
-domain=$YNH_APP_ARG_DOMAIN
-path_url=$YNH_APP_ARG_PATH_URL
-admin=$YNH_APP_ARG_ADMIN
-language=$YNH_APP_ARG_LANGUAGE
-is_public=$YNH_APP_ARG_IS_PUBLIC
-github_key=$YNH_APP_ARG_GITHUB_KEY
-github_secret=$YNH_APP_ARG_GITHUB_SECRET
-github_scope=$YNH_APP_ARG_GITHUB_SCOPE
-bitbucket_key=$YNH_APP_ARG_BITBUCKET_KEY
-bitbucket_secret=$YNH_APP_ARG_BITBUCKET_SECRET
-twitter_key=$YNH_APP_ARG_TWITTER_KEY
-twitter_secret=$YNH_APP_ARG_TWITTER_SECRET
-openstreetmap_key=$YNH_APP_ARG_OPENSTREETMAP_KEY
-openstreetmap_secret=$YNH_APP_ARG_OPENSTREETMAP_SECRET
+#REMOVEME? domain=$YNH_APP_ARG_DOMAIN
+#REMOVEME? path=$YNH_APP_ARG_PATH
+#REMOVEME? admin=$YNH_APP_ARG_ADMIN
+#REMOVEME? language=$YNH_APP_ARG_LANGUAGE
+#REMOVEME? is_public=$YNH_APP_ARG_IS_PUBLIC
+#REMOVEME? github_key=$YNH_APP_ARG_GITHUB_KEY
+#REMOVEME? github_secret=$YNH_APP_ARG_GITHUB_SECRET
+#REMOVEME? github_scope=$YNH_APP_ARG_GITHUB_SCOPE
+#REMOVEME? bitbucket_key=$YNH_APP_ARG_BITBUCKET_KEY
+#REMOVEME? bitbucket_secret=$YNH_APP_ARG_BITBUCKET_SECRET
+#REMOVEME? twitter_key=$YNH_APP_ARG_TWITTER_KEY
+#REMOVEME? twitter_secret=$YNH_APP_ARG_TWITTER_SECRET
+#REMOVEME? openstreetmap_key=$YNH_APP_ARG_OPENSTREETMAP_KEY
+#REMOVEME? openstreetmap_secret=$YNH_APP_ARG_OPENSTREETMAP_SECRET
 
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
 #=================================================
 # CHECK IF THE APP CAN BE INSTALLED WITH THIS ARGS
@@ -41,26 +41,26 @@ app=$YNH_APP_INSTANCE_NAME
 
 ynh_user_exists "$admin" || ynh_die "user $admin does not exist"
 
-final_path=/var/www/$app
-test ! -e "$final_path" || ynh_die "This path already contains a folder"
+#REMOVEME? install_dir=/var/www/$app
+#REMOVEME? test ! -e "$install_dir" || ynh_die "This path already contains a folder"
 
 # Normalize the url path syntax
-path_url=$(ynh_normalize_url_path $path_url)
+path=$(ynh_normalize_url_path $path)
 
 # Check web path availability
-ynh_webpath_available $domain $path_url
+#REMOVEME? ynh_webpath_available $domain $path
 # Register (book) web path
-ynh_webpath_register $app $domain $path_url
+#REMOVEME? ynh_webpath_register $app $domain $path
 
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
 
-ynh_app_setting_set $app domain $domain
-ynh_app_setting_set $app path $path_url
-ynh_app_setting_set $app admin $admin
+#REMOVEME? ynh_app_setting_set $app domain $domain
+#REMOVEME? ynh_app_setting_set $app path $path
+#REMOVEME? ynh_app_setting_set $app admin $admin
 ynh_app_setting_set $app language $language
-ynh_app_setting_set $app is_public $is_public
+#REMOVEME? ynh_app_setting_set $app is_public $is_public
 
 #=================================================
 # STANDARD MODIFICATIONS
@@ -75,20 +75,20 @@ sudo mkdir -p /opt/$app
 sudo useradd -N $app -d /opt/$app/
 
 # Create role and database with a password
-ynh_psql_setup_db $app $app
+#REMOVEME? ynh_psql_setup_db $app $app
 
 # Activate PostGIS extension
 ynh_psql_create_extension $app postgis
 
-sudo mkdir -p $final_path/venv
-sudo chown -R umap: $final_path
+sudo mkdir -p $install_dir/venv
+sudo chown -R umap: $install_dir
 
 # Installation de "umap"
-sudo su $app -c "virtualenv -p /usr/bin/python3 --distribute --no-site-packages ${final_path}/venv"
-sudo bash -c "source ${final_path}/venv/bin/activate && pip3 install umap-project && pip3 install uwsgi"
+sudo su $app -c "virtualenv -p /usr/bin/python3 --distribute --no-site-packages ${install_dir}/venv"
+sudo bash -c "source ${install_dir}/venv/bin/activate && pip3 install umap-project && pip3 install uwsgi"
 
-localfile="${final_path}/venv/local.py"
-sudo bash -c "source ${final_path}/venv/bin/activate && wget https://raw.githubusercontent.com/umap-project/umap/master/umap/settings/local.py.sample -O ${localfile}"
+localfile="${install_dir}/venv/local.py"
+sudo bash -c "source ${install_dir}/venv/bin/activate && wget https://raw.githubusercontent.com/umap-project/umap/master/umap/settings/local.py.sample -O ${localfile}"
 
 # Replace variables configuration 
 secret=$(ynh_string_random 24)
@@ -96,29 +96,29 @@ language="$(echo $language | head -c 2)"
 ynh_replace_config_umap
 
 # Create STATIC & MEDIA dir
-sudo mkdir "${final_path}/static"
-sudo mkdir "${final_path}/data"
+sudo mkdir "${install_dir}/static"
+sudo mkdir "${install_dir}/data"
 
 # export env
-# sudo bash -c "source ${final_path}/venv/bin/activate && env = UMAP_SETTINGS=${final_path}/venv/local.py"
+# sudo bash -c "source ${install_dir}/venv/bin/activate && env = UMAP_SETTINGS=${install_dir}/venv/local.py"
 
 # Install umap
-sudo bash -c "source ${final_path}/venv/bin/activate && export UMAP_SETTINGS=${localfile} && umap migrate && echo yes | umap collectstatic && umap storagei18n"
+sudo bash -c "source ${install_dir}/venv/bin/activate && export UMAP_SETTINGS=${localfile} && umap migrate && echo yes | umap collectstatic && umap storagei18n"
 # Create superuser
-sudo bash -c "source ${final_path}/venv/bin/activate && export UMAP_SETTINGS=${localfile} && umap createsuperuser --username ${admin} --email ${admin}@${domain} --noinput"
+sudo bash -c "source ${install_dir}/venv/bin/activate && export UMAP_SETTINGS=${localfile} && umap createsuperuser --username ${admin} --email ${admin}@${domain} --noinput"
 
 # Create datalayer directory
 sudo mkdir /opt/umap/data/datalayer
 sudo chown -R umap:users /opt/umap/data/datalayer
 
 # Copy Files
-sudo cp ../conf/uwsgi_params $final_path/uwsgi_params
-sudo cp ../conf/uwsgi.ini $final_path/uwsgi.ini
-sudo sed -i "s@__APP__@$app@g" $final_path/uwsgi.ini
+sudo cp ../conf/uwsgi_params $install_dir/uwsgi_params
+sudo cp ../conf/uwsgi.ini $install_dir/uwsgi.ini
+sudo sed -i "s@__APP__@$app@g" $install_dir/uwsgi.ini
 
 # Config service
 sudo mkdir -p /etc/uwsgi/apps-enabled/
-sudo ln -s $final_path/uwsgi.ini /etc/uwsgi/apps-enabled/umap.uwsgi.ini
+sudo ln -s $install_dir/uwsgi.ini /etc/uwsgi/apps-enabled/umap.uwsgi.ini
 
 # Start service
 sudo systemctl enable uwsgi
@@ -131,12 +131,12 @@ sudo yunohost service add umap.uwsgi
 ynh_nginx_config
 
 # Set ssowat config
-if [ $is_public -eq 0 ]
+#REMOVEME? if [ $is_public -eq 0 ]
 then
 	ynh_app_setting_delete $app skipped_uris # Delete public access
 fi
 
-if [ $is_public -eq 1 ]
+#REMOVEME? if [ $is_public -eq 1 ]
 then
 	ynh_app_setting_set $app skipped_uris "/" # Make app public if necessary
 fi

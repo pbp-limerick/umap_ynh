@@ -14,14 +14,14 @@ source .fonctions
 source /usr/share/yunohost/helpers
 
 # Get multi-instances specific variables
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve app settings
-domain=$(ynh_app_setting_get "$app" domain)
+#REMOVEME? domain=$(ynh_app_setting_get "$app" domain)
 
 # Copy the app files
-final_path="/opt/${app}"
-ynh_backup "$final_path" "sources" 1
+#REMOVEME? install_dir="/opt/${app}"
+ynh_backup "$install_dir" "sources" 1
 
 # Copy the nginx conf files
 ynh_backup "/etc/nginx/conf.d/${domain}.d/${app}.conf" "nginx.conf"

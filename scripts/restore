@@ -14,21 +14,21 @@ source .fonctions
 source /usr/share/yunohost/helpers
 
 # The parameter $app is the id of the app instance ex: ynhexample__2
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
 # Get old parameter of the app
-domain=$(ynh_app_setting_get $app domain)
-path_url=$(ynh_app_setting_get $app path_url)
-is_public=$(ynh_app_setting_get $app is_public)
+#REMOVEME? domain=$(ynh_app_setting_get $app domain)
+#REMOVEME? path=$(ynh_app_setting_get $app path)
+#REMOVEME? #REMOVEME? is_public=$(ynh_app_setting_get $app is_public)
 
 # Check domain/path availability
-sudo yunohost app checkurl "${domain}${path_url}" -a "$app" \
-    || ynh_die "Path not available: ${domain}${path_url}"
+sudo yunohost app checkurl "${domain}${path}" -a "$app" \
+    || ynh_die "Path not available: ${domain}${path}"
 
-# Check $final_path
-final_path="/opt/${app}"
-if [ -d $final_path ]; then
-	ynh_die "There is already a directory: $final_path"
+# Check $install_dir
+#REMOVEME? install_dir="/opt/${app}"
+if [ -d $install_dir ]; then
+	ynh_die "There is already a directory: $install_dir"
 fi
 
 # Check configuration files nginx
@@ -49,15 +49,15 @@ fi
 sudo useradd -N $app -d /opt/$app/
 
  # Restore sources & data
-sudo cp -a ./sources "$final_path"
+sudo cp -a ./sources "$install_dir"
 
 # Set permissions
-sudo chown -R $app: "$final_path"
+sudo chown -R $app: "$install_dir"
 
-pushd $final_path
+pushd $install_dir
 
 # Create role and database with a password
-ynh_psql_setup_db $app $app
+#REMOVEME? ynh_psql_setup_db $app $app
 
 # Restore db
 sudo --login --user=postgres psql -d ${db} -i $YNH_APP_BACKUP_DIR/umap_db.sql
@@ -66,7 +66,7 @@ popd
 
 # Create symlink for uwsgi
 sudo mkdir -p /etc/uwsgi/apps-enabled || true
-sudo ln -s $final_path/uwsgi.ini /etc/uwsgi/apps-enabled/umap.uwsgi.ini || true
+sudo ln -s $install_dir/uwsgi.ini /etc/uwsgi/apps-enabled/umap.uwsgi.ini || true
 
 # Restore nginx configuration files
 sudo cp -a ./nginx.conf   "$nginx_conf"
@@ -79,7 +79,7 @@ sudo systemctl restart uwsgi
 sudo yunohost service add umap.uwsgi
 
 # Set ssowat config
-if [[ $is_public -eq 0 ]]; then
+#REMOVEME? if [[ $is_public -eq 0 ]]; then
 	ynh_app_setting_delete $app unprotected_uris
 	sudo yunohost app ssowatconf
 fi

@@ -14,13 +14,13 @@ source .fonctions
 source /usr/share/yunohost/helpers
 
 # See comments in install script
-app=$YNH_APP_INSTANCE_NAME
+#REMOVEME? app=$YNH_APP_INSTANCE_NAME
 
 # Retrieve app settings
-domain=$(ynh_app_setting_get "$app" domain)
-path_url=$(ynh_app_setting_get "$app" path_url)
-admin=$(ynh_app_setting_get "$app" admin)
-language=$(ynh_app_setting_get "$app" language)
+#REMOVEME? domain=$(ynh_app_setting_get "$app" domain)
+#REMOVEME? path=$(ynh_app_setting_get "$app" path)
+#REMOVEME? admin=$(ynh_app_setting_get "$app" admin)
+#REMOVEME? language=$(ynh_app_setting_get "$app" language)
 
 # Check if admin is not null
 if [[ "$admin" = "" || "$language" = "" ]]; then
@@ -30,7 +30,7 @@ fi
 
 CHECK_PATH	# Checks and corrects the syntax of the path.
 
-final_path=/opt/$app
+#REMOVEME? install_dir=/opt/$app
 
 # Modify Nginx configuration file and copy it to Nginx conf directory
 ynh_nginx_config
@@ -39,14 +39,14 @@ ynh_nginx_config
 sudo systemctl stop uwsgi
 
 # Update umap & uwsgi
-sudo bash -c "source ${final_path}/venv/bin/activate && pip3 install umap-project --upgrade && pip3 install uwsgi --upgrade"
+sudo bash -c "source ${install_dir}/venv/bin/activate && pip3 install umap-project --upgrade && pip3 install uwsgi --upgrade"
 
 # Set ssowat config
-if [ "$is_public" = "Yes" ]; then
-	ynh_app_setting_set $app is_public 1 # Fix booléen is_public 
+#REMOVEME? if [ "$is_public" = "Yes" ]; then
+#REMOVEME? 	ynh_app_setting_set $app is_public 1 # Fix booléen is_public 
 	is_public=1
-elif [ "$is_public" = "No" ]; then
-	ynh_app_setting_set $app is_public 0
+#REMOVEME? elif [ "$is_public" = "No" ]; then
+#REMOVEME? 	ynh_app_setting_set $app is_public 0
  	is_public=0
 fi
 
