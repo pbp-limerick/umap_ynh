@@ -72,6 +72,7 @@ ynh_package_install postgresql postgresql-server-dev-13 postgis postgresql-13-po
 
 # Prepare Umap to be installed
 sudo mkdir -p /opt/$app
+sudo userdel -f $app
 sudo useradd -N $app -d /opt/$app/
 
 # Create role and database with a password
