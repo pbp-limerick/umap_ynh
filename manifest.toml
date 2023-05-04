@@ -34,8 +34,8 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
     ask.en = "Choose a path for umap"
     ask.fr = "Choisissez un chemin pour umap"
     type = "path"
-    example = "/"
-    default = "/"
+    example = "/umap"
+    default = "/umap"
 
     [install.admin]
     # this is a generic question - ask strings are automatically handled by Yunohost's core
@@ -54,48 +54,48 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
     [install.github_key]
     ask.en = "GitHub Key (Optional field)"
     ask.fr = "Clé GitHub (Champs optionnel)"
-    optional = "True"
+    optional = true
 
     [install.github_secret]
     ask.en = "GitHub Secret Key (Optional field)"
     ask.fr = "Clé secret GitHub (Champs optionnel)"
-    optional = "True"
+    optional = true
 
     [install.github_scope]
     ask.en = "GitHub Scope (Optional field)"
     ask.fr = "GitHub Scope (Champs optionnel)"
-    optional = "True"
+    optional = true
     example = "[\"user:email\", ]"
 
     [install.bitbucket_key]
     ask.en = "Bitbucket Key (Optional field)"
     ask.fr = "Clé Bitbucket (Champs optionnel)"
-    optional = "True"
+    optional = true
 
     [install.bitbucket_secret]
     ask.en = "Bitbucket Secret Key (Optional field)"
     ask.fr = "Clé secret Bitbucket (Champs optionnel)"
-    optional = "True"
+    optional = true
 
     [install.twitter_key]
     ask.en = "Twitter Key (Optional field)"
     ask.fr = "Clé Twitter (Champs optionnel)"
-    optional = "True"
+    optional = true
 
     [install.twitter_secret]
     ask.en = "Twitter Secret Key (Optional field)"
     ask.fr = "Clé secret Twitter (Champs optionnel)"
-    optional = "True"
+    optional = true
 
     [install.openstreetmap_key]
     ask.en = "Openstreetmap Key (Optional field)"
     ask.fr = "Clé Openstreetmap (Champs optionnel)"
-    optional = "True"
+    optional = true
 
     [install.openstreetmap_secret]
     ask.en = "Openstreetmap Secret Key (Optional field)"
     ask.fr = "Clé secret Openstreetmap (Champs optionnel)"
-    optional = "True"
+    optional = true
 
 [resources]
     [resources.system_user]
