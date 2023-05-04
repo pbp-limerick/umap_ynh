@@ -76,7 +76,7 @@ sudo userdel -f $app
 sudo useradd -N $app -d /opt/$app/
 
 # Create role and database with a password
-#REMOVEME? ynh_psql_setup_db $app $app
+ynh_psql_setup_db $app $app
 
 # Activate PostGIS extension
 ynh_psql_create_extension $app postgis
