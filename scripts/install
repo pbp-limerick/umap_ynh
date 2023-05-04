@@ -85,7 +85,7 @@ sudo mkdir -p $install_dir/venv
 sudo chown -R umap: $install_dir
 
 # Installation de "umap"
-sudo su $app -c "virtualenv -p /usr/bin/python3 --distribute --no-site-packages ${install_dir}/venv"
+sudo su $app -c "virtualenv -p /usr/bin/python3 ${install_dir}/venv"
 sudo bash -c "source ${install_dir}/venv/bin/activate && pip3 install umap-project && pip3 install uwsgi"
 
 localfile="${install_dir}/venv/local.py"
