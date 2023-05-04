@@ -33,7 +33,7 @@ ram.runtime = "50M" # FIXME: replace with an **estimate** minimum ram requiremen
     [install.path_url]
     ask.en = "Choose a path for umap"
     ask.fr = "Choisissez un chemin pour umap"
-    type = "path_url"
+    type = "path"
     example = "/"
     default = "/"
 
